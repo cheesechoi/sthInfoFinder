@@ -34,12 +34,12 @@ def getAladinInfo(keyword):
     _books = soup.select(".bo3")
     _places = soup.select(".usedshop_off_text2_box")
 
-    ret = ("------------------------<a href={}> {} </a>-------------------------<br/>".format(u.format(keyword), keyword))
+    ret = ("### [{}]()\n".format(keyword, u.format(keyword)))
     for name, places in zip(_books, _places):
         if keyword not in name.text:
             continue
 
-        ret += "<b>{}</b><br/> - {}<br/>".format(name.text, "/".join([_.text for _ in places.select("a")]))
+        ret += "[ {} ] - {}\n".format(name.text, ", ".join([_.text for _ in places.select("a")]))
     return ret
 
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     access_token = os.environ['MY_GITHUB_TOKEN']
     repository_name = "sthInfoFinder"
-    
+
     seoul_timezone = timezone('Asia/Seoul')
     today = datetime.now(seoul_timezone)
     today_date = today.strftime("%Y년 %m월 %d일")
