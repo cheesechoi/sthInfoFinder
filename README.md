@@ -1,0 +1,2 @@
+# sthInfoFinder
+find something!
