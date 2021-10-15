@@ -34,7 +34,7 @@ def getAladinInfo(keyword):
     _books = soup.select(".bo3")
     _places = soup.select(".usedshop_off_text2_box")
 
-    ret = ("### [{}]({})\n".format(keyword, u.format(keyword)))
+    ret = ("### [{}]({})\n".format(keyword, u.format(keyword).replace(" ", "+")))
     for name, places in zip(_books, _places):
         if keyword not in name.text:
             continue
