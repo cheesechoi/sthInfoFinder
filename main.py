@@ -1,8 +1,9 @@
-import os, requests
+import os, requests, urllib
 from bs4 import BeautifulSoup
 from datetime import datetime
 from pytz import timezone
 from github import Github
+
 
 def get_github_repo(access_token, repository_name):
     """
@@ -26,9 +27,9 @@ def upload_github_issue(repo, title, body):
     repo.create_issue(title=title, body=body)
 
 def getAladinInfo(keyword):
-    u = "https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=UsedStore&SearchWord={}"
-
-    data = requests.get(u.format(keyword))
+    keyword = urllib.parse.quote(keyword)
+    u = f"https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=UsedStore&SearchWord={keyword}"
+    data = requests.get(u)
     html = data.text
     soup = BeautifulSoup(html, 'html.parser')
     _books = soup.select(".bo3")
