@@ -27,15 +27,15 @@ def upload_github_issue(repo, title, body):
     repo.create_issue(title=title, body=body)
 
 def getAladinInfo(keyword):
-    keyword = urllib.parse.quote(keyword)
-    u = f"https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=UsedStore&SearchWord={keyword}"
+    _keyword = urllib.parse.quote(keyword)
+    u = f"https://www.aladin.co.kr/search/wsearchresult.aspx?SearchTarget=UsedStore&SearchWord={_keyword}"
     data = requests.get(u)
     html = data.text
     soup = BeautifulSoup(html, 'html.parser')
     _books = soup.select(".bo3")
     _places = soup.select(".usedshop_off_text2_box")
 
-    ret = ("### [{}]({})\n".format(keyword, u.format(keyword).replace(" ", "+")))
+    ret = ("### [{}]({})\n".format(keyword, u))
 
     for name, places in zip(_books[:3], _places[:3]):
         detail = name.parent.parent.select('li')[1].text
