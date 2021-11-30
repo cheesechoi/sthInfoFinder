@@ -2,9 +2,9 @@ name: Aladin crawler
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  #push:
-  #  branches: [ main ]
+    - cron: '0 6,22 * * *'
+  push:
+    branches: [ main ]
   #pull_request:
   #  branches: [ main ]
 
