@@ -35,28 +35,33 @@ def getAladinInfo(keyword):
     _places = soup.select(".usedshop_off_text2_box")
 
     ret = ("### [{}]({})\n".format(keyword, u.format(keyword).replace(" ", "+")))
-    for name, places in zip(_books, _places):
-        if keyword not in name.text:
-            continue
 
-        ret += "[ {} ] - {}\n".format(name.text, ", ".join([_.text for _ in places.select("a")]))
+    for name, places in zip(_books[:3], _places[:3]):
+        detail = name.parent.parent.select('li')[1].text
+        year = detail.split('|')[-1].strip()
+        ret += "[ {} ({}) ] - {}\n".format(
+            name.text, year,
+            ", ".join([_.text for _ in places.select("a")])
+        )
     return ret
 
 
 if __name__ == "__main__":
 
+    books = open("bookList.txt", "r").read().strip().split('\n')
+    issueContents = ''
+    for keyword in books:
+        #print(keyword)
+        d = getAladinInfo(keyword)
+        issueContents += d
+    #print(issueContents)
+
     access_token = os.environ['MY_GITHUB_TOKEN']
     repository_name = "sthInfoFinder"
-
     seoul_timezone = timezone('Asia/Seoul')
     today = datetime.now(seoul_timezone)
     today_date = today.strftime("%Y년 %m월 %d일")
 
-    books = open("bookList.txt", "r").read().split('\n')
-    issueContents = ''
-    for keyword in books:
-        issueContents += getAladinInfo(keyword)
-    
     repo = get_github_repo(access_token, repository_name)
     issueTitle = f"알라딘 도서 재고({today_date})"
     upload_github_issue(repo, issueTitle, issueContents)
